@@ -71,7 +71,7 @@ def print_time(threadName):
         except:
             print("Failed to get status of: " + ip)
         else:
-            print("Found server: " + ip + " " + status.version.name + " " + str(status.players.online))
+            print("Found server: " + ip + " " + status.version.name + " " + str(status.players.online) + status.description)
             if searchterm in status.version.name:
                 with open(outputfile) as f:
                     if ip not in f.read():
