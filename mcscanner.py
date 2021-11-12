@@ -3,23 +3,24 @@ import os
 import math
 import threading
 import time
+import argparse
+
+parser = argparse.ArgumentParser(description='get files for procesing')
+parser.add_argument("-i", "--inputfile", type=str, help="put in the file with all the server IP's")
+parser.add_argument("-o","--outputfile", type=str, help="the name of the file to put in the results")
+parser.add_argument("-p","--publicserverlist", type=str, help="put in the file with the public server list (public.txt)")
+parser.add_argument("-v","--version", type=str, default="", required=False, help="you can specify the minecarft server you wanna find")
+args = parser.parse_args()
 
 masscan = []
-
-
-
-
 print('Multithreaded mass minecraft server status checker by Footsiefat/Deathmonger')
 
 time.sleep(1)
 
-inputfile = input('What is the name of the text file with the server ips? (Including the .txt): ')
-
-outputfile = input('What is the name of the text file you want to add the ips to? (Including the .txt): ')
-
-publicserverlist = input('What is the name of the text file with the public server ips? (Including the .txt): ')
-
-searchterm = input('What version are you targeting? (Leave blank for targeting all servers): ')
+inputfile = args.inputfile
+outputfile = args.outputfile
+publicserverlist = args.publicserverlist
+searchterm = args.version
 
 outfile = open(outputfile, 'a+')
 outfile.close
@@ -81,7 +82,6 @@ def print_time(threadName):
                                 text_file.write(ip + " " + status.version.name.replace(" ", "_") + " " + str(status.players.online))
                                 text_file.write(os.linesep)
                                 text_file.close()
-
 
 for x in range(threads):
     thread = myThread(x, str(x)).start()
