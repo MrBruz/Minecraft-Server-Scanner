@@ -1,4 +1,4 @@
-from mcstatus import MinecraftServer
+from mcstatus import JavaServer
 import os
 import math
 import threading
@@ -39,7 +39,7 @@ def split_array(L,n):
     return [L[i::n] for i in range(n)]
 
 
-threads = int(input('How many threads so you want to use? (Recommended 20): '))
+threads = int(input('How many threads do you want to use? (Recommended 20): '))
 
 time.sleep(2)
 
@@ -67,7 +67,7 @@ def print_time(threadName):
             threadName.exit()
         try:
             ip = z
-            server = MinecraftServer(ip,25565)
+            server = JavaServer(ip,25565)
             status = server.status()
         except:
             print("Failed to get status of: " + ip)
