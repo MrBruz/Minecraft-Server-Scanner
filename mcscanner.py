@@ -6,6 +6,7 @@ import time
 import argparse
 from multiprocessing import Pool
 from typing import List, Union, Tuple
+
 try:
     import tqdm
 except ImportError:
@@ -47,7 +48,8 @@ exitFlag = 0
 
 content_out = []
 
-total_servers= len(server_ips)
+total_servers = len(server_ips)
+
 
 def ping_server(ip) -> Tuple[bool, Union[str, PingResponse]]:
     try:
@@ -59,7 +61,9 @@ def ping_server(ip) -> Tuple[bool, Union[str, PingResponse]]:
 
 def log_data(ip):
     success, resp = ping_server(ip)
-    if success and resp.players.online > minplayers:
+
+    if success and (
+            resp.players.online > minplayers and (searchterm == "" or searchterm == resp.version.name.split(' ')[0])):
         log = f"{ip} {resp.version.name.replace(' ', '_')} {resp.players.online}"
         content_out.append(log)
         print(f'[ SUCC ] {log}')
@@ -67,9 +71,11 @@ def log_data(ip):
         print(resp)
 
 
-with Pool(thread_count) as p:
-    for _ in tqdm.tqdm(p.imap_unordered(log_data, server_ips), total=len(server_ips)):
-        pass
-outfile = open(args.outputfile, 'a+')
-outfile.writelines(content_out)
-outfile.close()
+try:
+    with Pool(thread_count) as p:
+        for _ in tqdm.tqdm(p.imap_unordered(log_data, server_ips), total=len(server_ips)):
+            pass
+finally:
+    outfile = open(args.outputfile, 'a+')
+    outfile.writelines(content_out)
+    outfile.close()
