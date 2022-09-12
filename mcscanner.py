@@ -64,17 +64,15 @@ def log_data(ip):
 
     if success and (
             resp.players.online > minplayers and (searchterm == "" or searchterm == resp.version.name.split(' ')[0])):
-        log = f"{ip} {resp.version.name.replace(' ', '_')} {resp.players.online}"
+        log = f"{ip} {resp.version.name.replace(' ', '_')} {resp.players.online}\n"
         with lock:
-            with open(args.outputfile,'a')as f:
+            with open(args.outputfile, 'a') as f:
                 f.write(str(log))
         print(f'[ SUCC ] {log}')
     elif args.debug:
         print(resp)
 
 
-
 with Pool(thread_count) as p:
     for _ in tqdm.tqdm(p.imap_unordered(log_data, server_ips), total=len(server_ips)):
         pass
-
