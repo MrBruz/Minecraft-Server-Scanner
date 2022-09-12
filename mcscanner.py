@@ -22,10 +22,10 @@ outputfile = args.outputfile
 publicserverlist = args.publicserverlist
 searchterm = args.version
 
-outfile = open(outputfile, 'a+')
+outfile = open(str(outputfile), 'a+')
 outfile.close
 
-fileHandler = open (inputfile, "r")
+fileHandler = open(str(inputfile), "r")
 listOfLines = fileHandler.readlines()
 fileHandler.close()
 
@@ -39,9 +39,11 @@ def split_array(L,n):
     return [L[i::n] for i in range(n)]
 
 
-threads = int(input('How many threads do you want to use? (Recommended 20): '))
-
-time.sleep(2)
+threads = int(input('How many threads do you want to use? (Press enter to use 20): '))
+if threads == "":
+    threads = 20
+    
+    time.sleep(2)
 
 if len(masscan) < int(threads):
     threads = len(masscan)
