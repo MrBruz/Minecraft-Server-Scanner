@@ -6,7 +6,9 @@ import time
 import argparse
 from multiprocessing import Pool
 from typing import List, Union, Tuple
+from threading import Lock
 
+lock = Lock()
 try:
     import tqdm
 except ImportError:
@@ -46,8 +48,6 @@ fileHandler.close()
 server_ips = [line.strip().split(' ', 4)[3] for line in masscan_output if line.strip()[0] != "#"]
 exitFlag = 0
 
-content_out = []
-
 total_servers = len(server_ips)
 
 
@@ -65,17 +65,16 @@ def log_data(ip):
     if success and (
             resp.players.online > minplayers and (searchterm == "" or searchterm == resp.version.name.split(' ')[0])):
         log = f"{ip} {resp.version.name.replace(' ', '_')} {resp.players.online}"
-        content_out.append(log)
+        with lock:
+            with open(args.outputfile,'a')as f:
+                f.write(str(log))
         print(f'[ SUCC ] {log}')
     elif args.debug:
         print(resp)
 
 
-try:
-    with Pool(thread_count) as p:
-        for _ in tqdm.tqdm(p.imap_unordered(log_data, server_ips), total=len(server_ips)):
-            pass
-finally:
-    outfile = open(args.outputfile, 'a+')
-    outfile.writelines(content_out)
-    outfile.close()
+
+with Pool(thread_count) as p:
+    for _ in tqdm.tqdm(p.imap_unordered(log_data, server_ips), total=len(server_ips)):
+        pass
+
