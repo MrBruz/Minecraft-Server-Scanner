@@ -1,3 +1,5 @@
+#! /usr/bin/python3
+
 from mcstatus import JavaServer
 import os
 import math
