@@ -1,7 +1,8 @@
 #!/usr/bin/bash
-mkdir /usr/local/bin
+mkdir /usr/bin
+
 # Copy python file into /usr/bin
-cp ./mcscanner.py /usr/local/bin/mcscanner
+cp ./mcscanner.py /usr/bin/mcscanner
 
 # get the disctro specific package manager
 declare -A osInfo;
@@ -20,7 +21,8 @@ do
     fi
 done
 
-cd /usr/local/bin/ || exit
+# Make file globally executable
+chmod +x mcscanner
 
 # Get exclude file
 wget https://raw.githubusercontent.com/robertdavidgraham/masscan/master/data/exclude.conf
