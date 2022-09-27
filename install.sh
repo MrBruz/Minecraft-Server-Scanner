@@ -18,9 +18,6 @@ cd /usr/bin/ || exit
 # Make file globally executable
 chmod +x mcscanner
 
-# Get exclude file
-wget https://raw.githubusercontent.com/robertdavidgraham/masscan/master/data/exclude.conf
-
 # Install mcstatus from pip
 pip install mcstatus
 
