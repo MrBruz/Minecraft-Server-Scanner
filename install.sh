@@ -4,22 +4,16 @@ mkdir /usr/bin
 # Copy python file into /usr/bin
 cp ./mcscanner.py /usr/bin/mcscanner
 
-# get the disctro specific package manager
-declare -A osInfo;
-osInfo[/etc/redhat-release]=yum install
-osInfo[/etc/arch-release]=pacman -S
-osInfo[/etc/gentoo-release]=emerge --ask --verbose
-osInfo[/etc/SuSE-release]=zypper install
-osInfo[/etc/debian_version]=apt-get install
-osInfo[/etc/alpine-release]=apk add
- 
-# I stall masscan
-for f in ${!osInfo[@]}
-do
-    if [[ -f $f ]];then
-        sudo ${osInfo[$f]} masscan python pip
-    fi
-done
+# get the distro specific package manager
+packagesNeeded='masscan python pip'
+# shellcheck disable=SC2086
+if [ -x "$(command -v apk)" ];       then sudo apk add --no-cache $packagesNeeded
+elif [ -x "$(command -v apt-get)" ]; then sudo apt-get install "$packagesNeeded"
+elif [ -x "$(command -v dnf)" ];     then sudo dnf install "$packagesNeeded"
+elif [ -x "$(command -v zypper)" ];  then sudo zypper install "$packagesNeeded"
+else echo "FAILED TO INSTALL PACKAGE: Package manager not found. You must manually install: $packagesNeeded">&2; fi
+
+cd /usr/bin/ || exit
 
 # Make file globally executable
 chmod +x mcscanner
