@@ -23,3 +23,5 @@ mcscanner -i masscan.txt -o result.txt -p public.txt
 - Hit enter and wait for my program to check and grab the metadata for all the servers found, once this is done you will have a massive amount of servers (A lot of them being private ones) to have some fun with. The output file includes the IP Address, Version and Current Players online of found servers.
 
 **DISCLAIMER: THIS IS FOR EDUCATIONAL PURPOSES ONLY AND I AM NOT RESPONSIBLE FOR ANY MISUSE OF THESE TOOLS!**
+
+This program is license unter the [GNU GENERAL PUBLIC LICENSE](LICENSE)
