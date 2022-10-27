@@ -1,6 +1,7 @@
+#! /usr/bin/python
+
 from mcstatus import JavaServer
 import os
-import math
 import threading
 import time
 import argparse
