@@ -4,6 +4,10 @@ Lets you scan the entire internet in a couple of hours and identify all Minecraf
 
 **Installation:**
 ```
+git clone https://github.com/Baumistlustig/mc-scanner
+```
+
+```
 sudo bash install.sh
 ```
 
