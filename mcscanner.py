@@ -9,7 +9,7 @@ parser = argparse.ArgumentParser(description='get files for procesing')
 parser.add_argument("-i", "--inputfile", type=str, help="put in the file with all the server IP's")
 parser.add_argument("-o","--outputfile", type=str, help="the name of the file to put in the results")
 parser.add_argument("-p","--publicserverlist", type=str, help="put in the file with the public server list (public.txt)")
-parser.add_argument("-v","--version", type=str, default="", required=False, help="you can specify the minecarft server you wanna find")
+parser.add_argument("-v","--version", type=str, default="", required=False, help="you can specify the minecraft server you wanna find")
 args = parser.parse_args()
 
 masscan = []
