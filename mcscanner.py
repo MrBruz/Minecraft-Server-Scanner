@@ -1,5 +1,6 @@
 from mcstatus import JavaServer
 import os
+import dhooks
 import threading
 import time
 import argparse
@@ -11,6 +12,7 @@ parser.add_argument("-p", "--publicserverlist", type=str,
                     help="put in the file with the public server list (public.txt)")
 parser.add_argument("-v", "--version", type=str, default="", required=False,
                     help="you can specify the minecarft server you wanna find")
+parser.add_argument("-c", "--hock", type=str, help="put discord webhook in here")
 args = parser.parse_args()
 
 masscan = []
@@ -22,6 +24,10 @@ inputfile = args.inputfile
 outputfile = args.outputfile
 publicserverlist = args.publicserverlist
 searchterm = args.version
+hock = args.hock
+
+if hock is not None:
+    hock = dhooks.Webhook(hock)
 
 outfile = open(outputfile, 'a+')
 outfile.close
@@ -84,6 +90,7 @@ def print_time(threadName):
                                 text_file.write(
                                     ip + " " + status.version.name.replace(" ", "_") + " " + str(status.players.online))
                                 text_file.write(os.linesep)
+                                hock.send(f"{ip}")
                                 text_file.close()
 
 

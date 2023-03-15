@@ -8,7 +8,7 @@ Let's you scan the entire internet in a couple of hours and identify all Minecra
 sudo apt install masscan (Or distro specific installer command)
 wget https://raw.githubusercontent.com/robertdavidgraham/masscan/master/data/exclude.conf
 pip3 install mcstatus
-pip3 install dhook
+pip3 install dhooks
 ```
 
 **start scanning for servers:**
@@ -20,7 +20,7 @@ sudo masscan -p25565 0.0.0.0/0 --max-rate <maxrate> --excludefile exclude.conf -
 **find real minecraft servers from the results of the scan:**
 
 ```
-python mcscanner.py -i masscan.txt -o result.txt -p public.txt
+python mcscanner.py -i masscan.txt -o result.txt -p public.txt -c dicord hock adress
 ```
 
 ###### for more infomation you can always get help by typing ```python mcscanner.py -h```
