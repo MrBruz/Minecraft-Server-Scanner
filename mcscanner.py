@@ -86,12 +86,9 @@ def print_time(threadName):
                     if ip not in f.read():
                         with open(publicserverlist) as g:
                             if ip not in g.read():
-                                text_file = open(outputfile, "a")
-                                text_file.write(
-                                    ip + " " + status.version.name.replace(" ", "_") + " " + str(status.players.online))
-                                text_file.write(os.linesep)
-                                hock.send(f"{ip}")
-                                text_file.close()
+                                if status.players.online > 0:
+                                    hock.send(f"Ip : {ip} Players : {status.players.online}")
+                                    text_file.close()
 
 
 for x in range(threads):
