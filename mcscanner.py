@@ -7,7 +7,6 @@ import argparse
 
 parser = argparse.ArgumentParser(description='get files for procesing')
 parser.add_argument("-i", "--inputfile", type=str, help="put in the file with all the server IP's")
-parser.add_argument("-o", "--outputfile", type=str, help="the name of the file to put in the results")
 parser.add_argument("-p", "--publicserverlist", type=str,
                     help="put in the file with the public server list (public.txt)")
 parser.add_argument("-v", "--version", type=str, default="", required=False,
@@ -21,16 +20,12 @@ print('Multithreaded mass minecraft server status checker by Footsiefat/Deathmon
 time.sleep(1)
 
 inputfile = args.inputfile
-outputfile = args.outputfile
 publicserverlist = args.publicserverlist
 searchterm = args.version
 hock = args.hock
 
 if hock is not None:
     hock = dhooks.Webhook(hock)
-
-outfile = open(outputfile, 'a+')
-outfile.close
 
 fileHandler = open(inputfile, "r")
 listOfLines = fileHandler.readlines()
@@ -82,13 +77,11 @@ def print_time(threadName):
         else:
             print("Found server: " + ip + " " + status.version.name + " " + str(status.players.online))
             if searchterm in status.version.name:
-                with open(outputfile) as f:
-                    if ip not in f.read():
-                        with open(publicserverlist) as g:
-                            if ip not in g.read():
-                                if status.players.online > 0:
-                                    hock.send(f"Ip : {ip} Players : {status.players.online}")
-                                    text_file.close()
+                if ip not in f.read():
+                    with open(publicserverlist) as g:
+                        if ip not in g.read():
+                            if status.players.online > 0:
+                                hock.send(f"Ip : {ip} Players : {status.players.online}")
 
 
 for x in range(threads):
