@@ -1,5 +1,4 @@
 from mcstatus import JavaServer
-import os
 import dhooks
 import threading
 import time
@@ -12,6 +11,8 @@ parser.add_argument("-p", "--publicserverlist", type=str,
 parser.add_argument("-v", "--version", type=str, default="", required=False,
                     help="you can specify the minecarft server you wanna find")
 parser.add_argument("-c", "--hock", type=str, help="put discord webhook in here")
+parser.add_argument("-s", "--servertype", type=str, default="all", required=False,
+                    help="you can specify the server type (server type)")
 args = parser.parse_args()
 
 masscan = []
@@ -23,6 +24,7 @@ inputfile = args.inputfile
 publicserverlist = args.publicserverlist
 searchterm = args.version
 hock = args.hock
+servertype = args.servertype
 
 if hock is not None:
     hock = dhooks.Webhook(hock)
@@ -64,24 +66,25 @@ class myThread(threading.Thread):
         print("Exiting Thread " + self.name)
 
 
-def print_time(threadName):
-    for z in split[int(threadName)]:
+def print_time(threadname):
+    for z in split[int(threadname)]:
         if exitFlag:
-            threadName.exit()
+            threadname.exit()
         try:
             ip = z
             server = JavaServer(ip, 25565)
             status = server.status()
-        except:
-            print("Failed to get status of: " + ip)
+        except Exception as ex:
+            print(f"error: {ex}")
         else:
             print("Found server: " + ip + " " + status.version.name + " " + str(status.players.online))
             if searchterm in status.version.name:
-                if ip not in f.read():
-                    with open(publicserverlist) as g:
-                        if ip not in g.read():
-                            if status.players.online > 0:
-                                hock.send(f"Ip : {ip} Players : {status.players.online}")
+                if status.players.online > 0:
+                    if servertype == "all":
+                        hock.send(f"Ip : {ip} Players : {status.players.online}")
+                    else:
+                        if servertype in status.version.name:
+                            hock.send(f"Ip : {ip} Players : {status.players.online}")
 
 
 for x in range(threads):
